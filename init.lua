@@ -36,11 +36,12 @@ overrideOtherMouseUp = hs.eventtap.new({ hs.eventtap.event.types.otherMouseUp },
         if forwardMouseButton == pressedMouseButton
             then
                 if (deferred) then
-                    -- Open link in new tab with Cmd+Click
+                    -- Simulate middle-click (opens links in new tab, closes tabs)
                     local currentPos = e:location()
-                    -- Generate proper mouse down and up events with Cmd modifier
-                    local clickDown = hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, currentPos, {"cmd"})
-                    local clickUp = hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, currentPos, {"cmd"})
+                    local clickDown = hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseDown, currentPos)
+                    clickDown:setProperty(hs.eventtap.event.properties.mouseEventButtonNumber, 2)
+                    local clickUp = hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseUp, currentPos)
+                    clickUp:setProperty(hs.eventtap.event.properties.mouseEventButtonNumber, 2)
                     clickDown:post()
                     clickUp:post()
                     return true
